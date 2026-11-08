@@ -18,6 +18,7 @@ from config.session_Dependencia import SessionDeDependencia
 from config.segurity_Dependencia import Token_Dependencia
 from config.segurity import decode_access_token, oauth2_scheme
 from lib.pwd import get_password_hash
+from lib.dates import ahora_utc
 
 router = APIRouter()
 
@@ -160,7 +161,7 @@ async def update_usuario(
     if datos_usuario.password:
         usuario.password = get_password_hash(datos_usuario.password)
         
-    usuario.updated_at = datetime.utcnow()
+    usuario.updated_at = ahora_utc()
     session.add(usuario)
     session.commit()
     session.refresh(usuario)
@@ -216,7 +217,7 @@ async def patch_usuario(
     if datos_usuario.correo is not None:
         usuario.correo = datos_usuario.correo
         
-    usuario.updated_at = datetime.utcnow()
+    usuario.updated_at = ahora_utc()
     session.add(usuario)
     session.commit()
     session.refresh(usuario)

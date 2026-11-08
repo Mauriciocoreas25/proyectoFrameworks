@@ -5,6 +5,7 @@ from models.categoria import Categoria, CategoriaCreate, CategoriaUpdate, Catego
 from models.libro import Libro
 from config.session_Dependencia import SessionDeDependencia
 from config.segurity_Dependencia import Token_Dependencia
+from lib.dates import ahora_utc
 
 router = APIRouter()
 
@@ -76,7 +77,7 @@ async def update_categoria(
     resultado_de_consulta.nombre = datos_categoria.nombre
     if datos_categoria.descripcion is not None:
         resultado_de_consulta.descripcion = datos_categoria.descripcion
-    resultado_de_consulta.updated_at = datetime.utcnow()
+    resultado_de_consulta.updated_at = ahora_utc()
     
     session.add(resultado_de_consulta)
     session.commit()
@@ -104,7 +105,7 @@ async def patch_categoria(
     
     datos_dict = datos_categoria.model_dump(exclude_unset=True)
     resultado_de_consulta.sqlmodel_update(datos_dict)
-    resultado_de_consulta.updated_at = datetime.utcnow()
+    resultado_de_consulta.updated_at = ahora_utc()
     
     session.add(resultado_de_consulta)
     session.commit()

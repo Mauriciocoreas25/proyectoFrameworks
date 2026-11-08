@@ -5,6 +5,7 @@ from models.rol import Rol, RolCreate, RolUpdate, RolUpdatePatch
 from models.usuario import Usuario
 from config.session_Dependencia import SessionDeDependencia
 from config.segurity_Dependencia import Token_Dependencia
+from lib.dates import ahora_utc
 
 router = APIRouter()
 
@@ -78,7 +79,7 @@ async def update_rol(
     
     rol.nombre = datos_rol.nombre
     rol.descripcion = datos_rol.descripcion
-    rol.updated_at = datetime.utcnow()
+    rol.updated_at = ahora_utc()
     session.add(rol)
     session.commit()
     session.refresh(rol)
@@ -100,7 +101,7 @@ async def patch_rol(
     
     datos_dict = datos_rol.model_dump(exclude_unset=True)
     rol.sqlmodel_update(datos_dict)
-    rol.updated_at = datetime.utcnow()
+    rol.updated_at = ahora_utc()
     session.add(rol)
     session.commit()
     session.refresh(rol)

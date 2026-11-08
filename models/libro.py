@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import Optional
 from sqlmodel import SQLModel, Field
+from lib.dates import ahora_utc
 
 class LibroBase(SQLModel):
     titulo: str = Field(nullable=False, max_length=200, min_length=1)
@@ -15,8 +16,8 @@ class LibroBase(SQLModel):
 class Libro(LibroBase, table=True):
     __tablename__ = "libros"
     id: Optional[int] = Field(default=None, primary_key=True)
-    created_at: Optional[datetime] = Field(default_factory=datetime.utcnow)
-    updated_at: Optional[datetime] = Field(default_factory=datetime.utcnow)
+    created_at: Optional[datetime] = Field(default_factory=ahora_utc)
+    updated_at: Optional[datetime] = Field(default_factory=ahora_utc)
 
 class LibroCreate(LibroBase):
     pass

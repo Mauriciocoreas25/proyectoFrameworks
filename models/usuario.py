@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import Optional
 from pydantic import EmailStr
 from sqlmodel import SQLModel, Field
+from lib.dates import ahora_utc
 
 class UsuarioBase(SQLModel):
     username: str = Field(nullable=False, max_length=50, min_length=3, unique=True)
@@ -15,8 +16,8 @@ class UsuarioBase(SQLModel):
 class Usuario(UsuarioBase, table=True):
     __tablename__ = "usuarios"
     id: Optional[int] = Field(default=None, primary_key=True)
-    created_at: Optional[datetime] = Field(default_factory=datetime.utcnow)
-    updated_at: Optional[datetime] = Field(default_factory=datetime.utcnow)
+    created_at: Optional[datetime] = Field(default_factory=ahora_utc)
+    updated_at: Optional[datetime] = Field(default_factory=ahora_utc)
 
 class UsuarioCreate(UsuarioBase):
     pass

@@ -7,6 +7,7 @@ from models.libro import Libro
 from models.usuario import Usuario
 from config.session_Dependencia import SessionDeDependencia
 from config.segurity_Dependencia import Token_Dependencia
+from lib.dates import ahora_utc
 
 router = APIRouter()
 
@@ -52,7 +53,7 @@ async def create_prestamo(
     nuevo_prestamo = Prestamo(
         id_usuario=datos_prestamo.id_usuario,
         id_libro=datos_prestamo.id_libro,
-        fecha_prestamo=datetime.utcnow(),
+        fecha_prestamo=ahora_utc(),
         fecha_devolucion_esperada=datos_prestamo.fecha_devolucion_esperada,
         estado="ACTIVO",
         observaciones=datos_prestamo.observaciones,
@@ -62,7 +63,7 @@ async def create_prestamo(
     libro.ejemplares_disponibles -= 1
     if libro.ejemplares_disponibles <= 0:
         libro.disponible = False
-    libro.updated_at = datetime.utcnow()
+    libro.updated_at = ahora_utc()
     
     session.add(nuevo_prestamo)
     session.add(libro)
@@ -157,8 +158,8 @@ async def registrar_devolucion(
         
     # Actualizar estado y fecha de devolución
     prestamo.estado = "DEVUELTO"
-    prestamo.fecha_devolucion_real = datetime.utcnow()
-    prestamo.updated_at = datetime.utcnow()
+    prestamo.fecha_devolucion_real = ahora_utc()
+    prestamo.updated_at = ahora_utc()
     if datos_devolucion and datos_devolucion.observaciones:
         prestamo.observaciones = datos_devolucion.observaciones
         
@@ -168,7 +169,7 @@ async def registrar_devolucion(
     if libro:
         libro.ejemplares_disponibles += 1
         libro.disponible = True
-        libro.updated_at = datetime.utcnow()
+        libro.updated_at = ahora_utc()
         session.add(libro)
         
     session.add(prestamo)

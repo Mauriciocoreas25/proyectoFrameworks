@@ -8,6 +8,7 @@ from models.categoria import Categoria
 from models.prestamo import Prestamo
 from config.session_Dependencia import SessionDeDependencia
 from config.segurity_Dependencia import Token_Dependencia
+from lib.dates import ahora_utc
 
 router = APIRouter()
 
@@ -132,7 +133,7 @@ async def update_libro(
     libro.total_ejemplares = datos_libro.total_ejemplares
     libro.ejemplares_disponibles = datos_libro.ejemplares_disponibles
     libro.disponible = (datos_libro.ejemplares_disponibles > 0)
-    libro.updated_at = datetime.utcnow()
+    libro.updated_at = ahora_utc()
     
     session.add(libro)
     session.commit()
@@ -179,7 +180,7 @@ async def patch_libro(
     if "ejemplares_disponibles" in datos_dict:
         libro.disponible = (libro.ejemplares_disponibles > 0)
         
-    libro.updated_at = datetime.utcnow()
+    libro.updated_at = ahora_utc()
     session.add(libro)
     session.commit()
     session.refresh(libro)

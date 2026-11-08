@@ -5,6 +5,7 @@ from models.autor import Autor, AutorCreate, AutorUpdate, AutorUpdatePatch
 from models.libro import Libro
 from config.session_Dependencia import SessionDeDependencia
 from config.segurity_Dependencia import Token_Dependencia
+from lib.dates import ahora_utc
 
 router = APIRouter()
 
@@ -68,7 +69,7 @@ async def update_autor(
     autor.nombre = datos_autor.nombre
     autor.nacionalidad = datos_autor.nacionalidad
     autor.biografia = datos_autor.biografia
-    autor.updated_at = datetime.utcnow()
+    autor.updated_at = ahora_utc()
     
     session.add(autor)
     session.commit()
@@ -94,7 +95,7 @@ async def patch_autor(
     
     datos_dict = datos_autor.model_dump(exclude_unset=True)
     autor.sqlmodel_update(datos_dict)
-    autor.updated_at = datetime.utcnow()
+    autor.updated_at = ahora_utc()
     
     session.add(autor)
     session.commit()
